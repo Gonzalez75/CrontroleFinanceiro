@@ -6,12 +6,17 @@ const form = document.querySelector('#form')
 const inputTransactionName = document.querySelector('#text')
 const inputTransactionAmount = document.querySelector('#amount')
 
-const dummyTransactions = [
+let dummyTransactions = [
     {id: 1, name: 'Bolo', amount: -20},
     {id: 2, name: 'Salario', amount: 300},
     {id: 3, name: 'Torta', amount: -10},
     {id: 4, name: 'Violao', amount: 150}
 ]
+
+const removeTransaction = ID => {
+    dummyTransactions = dummyTransactions.filter(transaction => transaction.id !== ID)
+    init()
+}
 
 const addTransactionsIntoDOM = transaction => {
     const operator = transaction.amount < 0 ? '-' : '+'
@@ -21,7 +26,11 @@ const addTransactionsIntoDOM = transaction => {
 
     li.classList.add(CSSClass)
     li.innerHTML = `
-    ${transaction.name} <span>${operator} R$ ${amountWihoutOperator}</span><button class="delete-btn">x</button>
+    ${transaction.name} 
+    <span>${operator} R$ ${amountWihoutOperator}</span>
+    <button class="delete-btn" onClick="removeTransaction(${transaction.id})">
+    x
+    </button>
     `
     transactionsUl.prepend(li)
 }
@@ -48,6 +57,7 @@ const updateBalanceValues = () => {
     }
 
 const init = () => {
+    transactionsUl.innerHTML = ''
     dummyTransactions.forEach(addTransactionsIntoDOM)
     updateBalanceValues()
 }
@@ -70,7 +80,7 @@ form.addEventListener('submit', event => {
     const transaction = {
         id: generatorID(), 
         name: transactionName, 
-        amount: transactionAmount
+        amount: Number(transactionAmount)
     }
 
     dummyTransactions.push(transaction)
