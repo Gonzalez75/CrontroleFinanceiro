@@ -14,6 +14,7 @@ let transactions = localStorage
 const removeTransaction = ID => {
     transactions = transactions.filter(transaction =>
     transaction.id !== ID)
+    updateLocalStorage()
     init()
 }
 
@@ -63,9 +64,13 @@ const init = () => {
 
 init()
 
+const updateLocalStorage = () => {
+    localStorage.setItem('transactions', JSON.stringify(transactions))
+}
+
 const generatorID = () => Math.round(Math.random() * 1000)
 
-form.addEventListener('submit', event => {
+const handleFormSubmit = event => {
     event.preventDefault()
 
     const transactionName = inputTransactionName.value.trim()
@@ -84,7 +89,10 @@ form.addEventListener('submit', event => {
 
     transactions.push(transaction)
     init()
+    updateLocalStorage()
 
     inputTransactionName.value = ''
     inputTransactionAmount.value = ''
-})
+}
+
+form.addEventListener('submit', handleFormSubmit)
