@@ -54,7 +54,7 @@ const init = () => {
 
 init()
 
-
+const generatorID = () => Math.round(Math.random() * 1000)
 
 form.addEventListener('submit', event => {
     event.preventDefault()
@@ -67,5 +67,15 @@ form.addEventListener('submit', event => {
         return
     }
 
-    const transaction = {id: 1, name: transactionName, amount: transactionAmount}
+    const transaction = {
+        id: generatorID(), 
+        name: transactionName, 
+        amount: transactionAmount
+    }
+
+    dummyTransactions.push(transaction)
+    init()
+
+    inputTransactionName.value = ''
+    inputTransactionAmount.value = ''
 })
